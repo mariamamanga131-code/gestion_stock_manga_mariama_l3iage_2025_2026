@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
+import javafx.scene.control.Alert;
 
 /*
     -@FXML: Annotation qui connecte un attribut Java à un composant déclaré dans le fichier XML via son fx:id
@@ -46,8 +47,12 @@ public class MainController {
             Node vue = loader.load();
             contenuPrincipale.getChildren().clear();
             contenuPrincipale.getChildren().add(vue);
-        } catch(Exception e){
-            e.printStackTrace();
+        } catch (Exception e) {
+            Alert alerte = new Alert(Alert.AlertType.ERROR);
+            alerte.setTitle("Erreur de navigation");
+            alerte.setHeaderText("Impossible de charger cet écran");
+            alerte.setContentText("Détail : " + e.getMessage());
+            alerte.showAndWait();
         }
     }
 }
