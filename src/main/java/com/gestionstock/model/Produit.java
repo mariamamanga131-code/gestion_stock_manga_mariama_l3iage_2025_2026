@@ -39,9 +39,9 @@ public class Produit {
     private int quantiteMin;
 
     @Column(nullable = false)
-    private double prix;
+    private Double prix;
 
-    private double prixPromo;
+    private Double prixPromo;
 
     @ManyToOne
     @JoinColumn(name = "categorie_id")
