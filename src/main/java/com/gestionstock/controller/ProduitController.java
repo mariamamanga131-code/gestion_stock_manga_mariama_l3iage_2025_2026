@@ -126,4 +126,9 @@ public class ProduitController {
             chargerDonnees();
         }
     }
+
+    @FXML
+    void handleAjouter() {
+        System.out.println("Bouton Ajouter cliqué - le formulaire sera branché plus tard");
+    }
 }
