@@ -13,7 +13,10 @@ public class CategorieServiceImpl implements CategorieService {
     public List<Categorie> findAllCategories() {
         EntityManager em = JPAUtil.getEntityManager();
         try {
-            return em.createQuery("SELECT c FROM Categorie c", Categorie.class).getResultList();
+            return em.createQuery(
+                    "SELECT DISTINCT c FROM Categorie c LEFT JOIN FETCH c.produits",
+                    Categorie.class
+            ).getResultList();
         } finally {
             em.close();
         }
