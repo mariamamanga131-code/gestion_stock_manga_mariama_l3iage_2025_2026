@@ -60,6 +60,9 @@ public class Categorie {
     public void setDescription(String description) {
         this.description = description;
     }
+    public List<Produit> getProduits() {
+        return produits;
+    }
 
     @Override
     public String toString() {
