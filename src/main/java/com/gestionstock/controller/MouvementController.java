@@ -15,6 +15,13 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import java.io.IOException;
+
 public class MouvementController {
 
     @FXML
@@ -89,6 +96,22 @@ public class MouvementController {
 
     @FXML
     void handleAjouter(ActionEvent event) {
-        System.out.println("Ajouter mouvement - formulaire à brancher plus tard");
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/gestionstock/AddMouvementDialog.fxml")
+            );
+            Parent root = loader.load();
+
+            AddMouvementController controleurDialogue = loader.getController();
+            controleurDialogue.setSurMouvementAjoute(this::chargerDonnees);
+
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Nouveau mouvement");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
