@@ -71,6 +71,7 @@ public class LoginController {
             );
             stage.setScene(scene);
         } catch (IOException e) {
+            e.printStackTrace();
             afficherErreur("Erreur lors du chargement du menu principal");
         }
     }
