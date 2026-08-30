@@ -53,6 +53,10 @@ public class MainController {
     @FXML
     private void afficherUtilisateurs() {chargerVue("/com/gestionstock/utilisateurs.fxml");
     }
+    @FXML
+    private void afficherStatistiques() {
+        chargerVue("/com/gestionstock/statistiques.fxml");
+    }
 
     private void chargerVue(String cheminFxml) {
         try {
