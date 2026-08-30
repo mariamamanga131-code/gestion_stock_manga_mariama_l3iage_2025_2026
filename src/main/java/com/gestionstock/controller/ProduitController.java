@@ -18,6 +18,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.List;
 import java.util.Optional;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import java.io.IOException;
 
 public class ProduitController {
     @FXML
@@ -129,6 +136,45 @@ public class ProduitController {
 
     @FXML
     void handleAjouter() {
-        System.out.println("Bouton Ajouter cliqué - le formulaire sera branché plus tard");
+        ouvrirFormulaireProduit(null);
+    }
+
+    @FXML
+    void handleModifier() {
+        Produit selection = tableProduits.getSelectionModel().getSelectedItem();
+
+        if (selection == null) {
+            Alert alerte = new Alert(Alert.AlertType.WARNING);
+            alerte.setTitle("Aucune sélection");
+            alerte.setContentText("Sélectionnez un produit à modifier.");
+            alerte.showAndWait();
+            return;
+        }
+
+        ouvrirFormulaireProduit(selection);
+    }
+
+    private void ouvrirFormulaireProduit(Produit produitAModifier) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/gestionstock/AddProduitDialog.fxml")
+            );
+            Parent root = loader.load();
+
+            AddProduitController controleurDialogue = loader.getController();
+            controleurDialogue.setSurProduitEnregistre(this::chargerDonnees);
+
+            if (produitAModifier != null) {
+                controleurDialogue.preparerPourModification(produitAModifier);
+            }
+
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle(produitAModifier == null ? "Nouveau produit" : "Modifier le produit");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

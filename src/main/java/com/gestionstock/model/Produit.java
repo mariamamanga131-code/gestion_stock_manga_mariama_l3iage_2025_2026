@@ -43,6 +43,14 @@ public class Produit {
 
     private Double prixPromo;
 
+    public Double getPrixPromo() {
+        return prixPromo;
+    }
+
+    public void setPrixPromo(Double prixPromo) {
+        this.prixPromo = prixPromo;
+    }
+
     @ManyToOne
     @JoinColumn(name = "categorie_id")
     private Categorie categorie;

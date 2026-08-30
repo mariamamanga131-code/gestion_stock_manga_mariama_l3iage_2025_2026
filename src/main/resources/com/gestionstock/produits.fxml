@@ -18,6 +18,7 @@
             <children>
                 <TextField fx:id="champRecherche" onKeyReleased="#rechercherProduits" prefWidth="300.0" promptText="Recheche" />
                 <Button mnemonicParsing="false" prefWidth="90.0" styleClass="btn-primaire" text="Ajouter" fx:id="btnAjouter" onAction="#handleAjouter" />
+                <Button fx:id="boutonModifier" mnemonicParsing="false" onAction="#handleModifier" prefWidth="90.0" text="Modifier" />
                 <Button fx:id="boutonSupprimer" mnemonicParsing="false" onAction="#supprimerProduit" prefWidth="90.0" text="Supprimer" />
             </children>
         </HBox>
