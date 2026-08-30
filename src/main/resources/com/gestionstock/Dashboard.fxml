@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.ColumnConstraints?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="700.0" spacing="20.0"
+      xmlns="http://javafx.com/javafx/26"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.gestionstock.controller.DashboardController"
+>
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <children>
+        <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Tableau de bord" />
+
+        <GridPane hgap="15.0" vgap="15.0">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="25.0" />
+                <ColumnConstraints percentWidth="25.0" />
+                <ColumnConstraints percentWidth="25.0" />
+                <ColumnConstraints percentWidth="25.0" />
+            </columnConstraints>
+            <children>
+                <VBox style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 8;" GridPane.columnIndex="0">
+                    <children>
+                        <Label style="-fx-text-fill: gray;" text="Total produits" />
+                        <Label fx:id="labelTotalProduits" style="-fx-font-size: 26px; -fx-font-weight: bold;" text="0" />
+                    </children>
+                </VBox>
+                <VBox style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 8;" GridPane.columnIndex="1">
+                    <children>
+                        <Label style="-fx-text-fill: gray;" text="Stock bas" />
+                        <Label fx:id="labelStockBas" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #d9534f;" text="0" />
+                    </children>
+                </VBox>
+                <VBox style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 8;" GridPane.columnIndex="2">
+                    <children>
+                        <Label style="-fx-text-fill: gray;" text="Valeur du stock" />
+                        <Label fx:id="labelValeurStock" style="-fx-font-size: 26px; -fx-font-weight: bold;" text="0 FCFA" />
+                    </children>
+                </VBox>
+                <VBox style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 8;" GridPane.columnIndex="3">
+                    <children>
+                        <Label style="-fx-text-fill: gray;" text="Mouvements du jour" />
+                        <Label fx:id="labelMouvementsJour" style="-fx-font-size: 26px; -fx-font-weight: bold;" text="0 / 0" />
+                    </children>
+                </VBox>
+            </children>
+        </GridPane>
+
+        <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Produits en stock bas" />
+        <ListView fx:id="listeStockBas" prefHeight="250.0" />
+    </children>
+</VBox>

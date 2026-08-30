@@ -18,10 +18,10 @@ public class MainController {
     @FXML
     public void initialize() { afficherDashboard();}
 
+
     @FXML
     private void afficherDashboard() {
-        contenuPrincipale.getChildren().clear();
-        contenuPrincipale.getChildren().add(new Label("Dashboard"));
+        chargerVue("/com/gestionstock/dashboard.fxml");
     }
 
     @FXML
