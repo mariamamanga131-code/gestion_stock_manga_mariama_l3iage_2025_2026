@@ -16,8 +16,16 @@ public class MainController {
     private StackPane contenuPrincipale;
 
     @FXML
-    public void initialize() { afficherDashboard();}
+    private javafx.scene.control.Button btnUtilisateurs;
 
+    @FXML
+    public void initialize() {
+        if (!com.gestionstock.util.SessionUtilisateur.estAdmin()) {
+            btnUtilisateurs.setVisible(false);
+            btnUtilisateurs.setManaged(false);
+        }
+        afficherDashboard();
+    }
 
     @FXML
     private void afficherDashboard() {
@@ -41,6 +49,9 @@ public class MainController {
 
     @FXML
     private void afficherMouvements() { chargerVue("/com/gestionstock/mouvements.fxml");
+    }
+    @FXML
+    private void afficherUtilisateurs() {chargerVue("/com/gestionstock/utilisateurs.fxml");
     }
 
     private void chargerVue(String cheminFxml) {
