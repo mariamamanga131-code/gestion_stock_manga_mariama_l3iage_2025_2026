@@ -9,6 +9,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import java.io.IOException;
 
 public class FournisseurController {
 
@@ -61,12 +67,43 @@ public class FournisseurController {
 
     @FXML
     void handleAjouter(ActionEvent event) {
-        System.out.println("Ajouter fournisseur - formulaire à brancher plus tard");
+        ouvrirFormulaireFournisseur(null);
     }
 
     @FXML
     void handleModifier(ActionEvent event) {
-        System.out.println("Modifier fournisseur - formulaire à brancher plus tard");
+        Fournisseur selection = tableFournisseurs.getSelectionModel().getSelectedItem();
+
+        if (selection == null) {
+            afficherAlerte(Alert.AlertType.WARNING, "Aucune sélection", "Sélectionnez un fournisseur à modifier.");
+            return;
+        }
+
+        ouvrirFormulaireFournisseur(selection);
+    }
+
+    private void ouvrirFormulaireFournisseur(Fournisseur fournisseurAModifier) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/gestionstock/AddFournisseurDialog.fxml")
+            );
+            Parent root = loader.load();
+
+            AddFournisseurController controleurDialogue = loader.getController();
+            controleurDialogue.setSurFournisseurEnregistre(this::chargerDonnees);
+
+            if (fournisseurAModifier != null) {
+                controleurDialogue.preparerPourModification(fournisseurAModifier);
+            }
+
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle(fournisseurAModifier == null ? "Nouveau fournisseur" : "Modifier le fournisseur");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

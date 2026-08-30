@@ -9,6 +9,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import java.io.IOException;
 
 public class CategorieController {
 
@@ -58,12 +64,43 @@ public class CategorieController {
 
     @FXML
     void handleAjouter(ActionEvent event) {
-        System.out.println("Ajouter catégorie - formulaire à brancher plus tard");
+        ouvrirFormulaireCategorie(null);
     }
 
     @FXML
     void handleModifier(ActionEvent event) {
-        System.out.println("Modifier catégorie - formulaire à brancher plus tard");
+        Categorie selection = tableCategories.getSelectionModel().getSelectedItem();
+
+        if (selection == null) {
+            afficherAlerte(Alert.AlertType.WARNING, "Aucune sélection", "Sélectionnez une catégorie à modifier.");
+            return;
+        }
+
+        ouvrirFormulaireCategorie(selection);
+    }
+
+    private void ouvrirFormulaireCategorie(Categorie categorieAModifier) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/gestionstock/AddCategorieDialog.fxml")
+            );
+            Parent root = loader.load();
+
+            AddCategorieController controleurDialogue = loader.getController();
+            controleurDialogue.setSurCategorieEnregistree(this::chargerDonnees);
+
+            if (categorieAModifier != null) {
+                controleurDialogue.preparerPourModification(categorieAModifier);
+            }
+
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle(categorieAModifier == null ? "Nouvelle catégorie" : "Modifier la catégorie");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
