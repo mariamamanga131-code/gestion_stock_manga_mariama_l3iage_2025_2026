@@ -6,7 +6,13 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.control.Alert;
-
+import com.gestionstock.util.SessionUtilisateur;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import java.io.IOException;
 /*
     -@FXML: Annotation qui connecte un attribut Java à un composant déclaré dans le fichier XML via son fx:id
     -initialize(): méthode spéciale appelée automatiquement par JavaFx après le chargement du FXML
@@ -17,14 +23,39 @@ public class MainController {
 
     @FXML
     private javafx.scene.control.Button btnUtilisateurs;
+    @FXML
+    private Label labelUtilisateurConnecte;
+
 
     @FXML
     public void initialize() {
-        if (!com.gestionstock.util.SessionUtilisateur.estAdmin()) {
+        com.gestionstock.model.Utilisateur utilisateur = SessionUtilisateur.getUtilisateurConnecte();
+        if (utilisateur != null) {
+            labelUtilisateurConnecte.setText("Connecté : " + utilisateur.getNom() + " (" + utilisateur.getRole() + ")");
+        }
+
+        if (!SessionUtilisateur.estAdmin()) {
             btnUtilisateurs.setVisible(false);
             btnUtilisateurs.setManaged(false);
         }
+
         afficherDashboard();
+    }
+
+    @FXML
+    private void handleDeconnexion(javafx.event.ActionEvent event) {
+        SessionUtilisateur.deconnecter();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/gestionstock/LoginView.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/com/gestionstock/style.css").toExternalForm());
+            stage.setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -57,6 +88,7 @@ public class MainController {
     private void afficherStatistiques() {
         chargerVue("/com/gestionstock/statistiques.fxml");
     }
+
 
     private void chargerVue(String cheminFxml) {
         try {

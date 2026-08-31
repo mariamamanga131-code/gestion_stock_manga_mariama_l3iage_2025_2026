@@ -21,7 +21,7 @@
                 <TableColumn fx:id="colonneNom" prefWidth="150.0" text="Nom" />
                 <TableColumn fx:id="colonneEmail" prefWidth="200.0" text="Email" />
                 <TableColumn fx:id="colonneRole" prefWidth="120.0" text="Rôle" />
-                <TableColumn fx:id="colonneStatut" prefWidth="90.0" text="Statut" />
+                <TableColumn fx:id="colonneStatut" prefWidth="90.0" text="Statut"/>
             </columns>
         </TableView>
         <HBox spacing="10.0">
