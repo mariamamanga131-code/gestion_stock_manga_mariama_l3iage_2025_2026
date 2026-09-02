@@ -47,6 +47,16 @@ CREATE TABLE IF NOT EXISTS mouvements(
     produit_id INT,
     FOREIGN KEY (produit_id) REFERENCES produits(id)
 );
+-- Table utilisateurs
+CREATE TABLE IF NOT EXISTS utilisateurs(
+    id  INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    nom VARCHAR(100) NOT NULL,
+    mot_de_passe_hash VARCHAR(255) NOT NULL,
+    role ENUM('ADMIN', 'GESTIONNAIRE') NOT NULL,
+    date_creation DATE DEFAULT (CURRENT_DATE),
+    actif BOOLEAN NOT NULL DEFAULT true
+    );
 
 --- ==============================================================================================
 --DONNEES DE TEST
@@ -65,3 +75,15 @@ INSERT INTO fournisseurs(nom, email, tel) VALUES
 INSERT INTO produits(nom, prix, quantite_stock, quantite_min, categorie_id, fournisseur_id) VALUES
     ("Ordinateur Portable", 550000.0, 15, 3, 1, 1),
     ("Bureau en bois", 87000.0, 8, 2, 2, 2);
+
+INSERT INTO utilisateurs (email, nom, mot_de_passe_hash, role, actif) VALUES
+      ('admin@gestionstock.com', 'Admin Principal', '$2a$12$wgOO0a6I30VNbrRCpK5PfOmI0SCHH0L8UcBKqbBFv2QqdQy0q2d0C', 'ADMIN', true),
+      ('gestionnaire@gestionstock.com', 'Gestionnaire Test', '$2a$12$1nX49eATuNJTX2dINnuC4.ZbOQTpkJzjOjCAX0ZzIwrYG1.cz16uK', 'GESTIONNAIRE', true);
+
+-- Mouvements de test (pour peupler dashboard et statistiques dès l'initialisation)
+INSERT INTO mouvements (type, quantite, date_mouvement, motif, produit_id) VALUES
+      ('ENTRE', 10, CURRENT_TIMESTAMP - INTERVAL 20 DAY, 'Réapprovisionnement initial', 1),
+      ('SORTIE', 3, CURRENT_TIMESTAMP - INTERVAL 15 DAY, 'Vente client', 1),
+      ('ENTRE', 5, CURRENT_TIMESTAMP - INTERVAL 10 DAY, 'Livraison fournisseur', 2),
+      ('SORTIE', 2, CURRENT_TIMESTAMP - INTERVAL 3 DAY, 'Vente client', 2),
+      ('ENTRE', 8, CURRENT_TIMESTAMP - INTERVAL 1 DAY, 'Réapprovisionnement', 1);
