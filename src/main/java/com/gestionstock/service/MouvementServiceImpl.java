@@ -17,7 +17,7 @@ public class MouvementServiceImpl implements MouvementService {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             return em.createQuery(
-                    "SELECT m FROM Mouvement m JOIN FETCH m.produit ORDER BY m.dateMouvement DESC",
+                    "SELECT m FROM Mouvement m JOIN FETCH m.produit LEFT JOIN FETCH m.utilisateur ORDER BY m.dateMouvement DESC",
                     Mouvement.class
             ).getResultList();
         } finally {
@@ -30,7 +30,7 @@ public class MouvementServiceImpl implements MouvementService {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             return em.createQuery(
-                            "SELECT m FROM Mouvement m JOIN FETCH m.produit WHERE m.produit.id = :produitId ORDER BY m.dateMouvement DESC",
+                            "SELECT m FROM Mouvement m JOIN FETCH m.produit LEFT JOIN FETCH m.utilisateur WHERE m.produit.id = :produitId ORDER BY m.dateMouvement DESC",
                             Mouvement.class)
                     .setParameter("produitId", produitId)
                     .getResultList();
@@ -44,7 +44,7 @@ public class MouvementServiceImpl implements MouvementService {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             return em.createQuery(
-                            "SELECT m FROM Mouvement m JOIN FETCH m.produit WHERE m.type = :type ORDER BY m.dateMouvement DESC",
+                            "SELECT m FROM Mouvement m JOIN FETCH m.produit LEFT JOIN FETCH m.utilisateur WHERE m.type = :type ORDER BY m.dateMouvement DESC",
                             Mouvement.class)
                     .setParameter("type", type)
                     .getResultList();
@@ -60,10 +60,9 @@ public class MouvementServiceImpl implements MouvementService {
             LocalDateTime debutDateTime = debut.atStartOfDay();
             LocalDateTime finDateTime = fin.atTime(23, 59, 59);
 
-            return em.createQuery(
-                    "SELECT m FROM Mouvement m JOIN FETCH m.produit " +
-                            "WHERE m.dateMouvement BETWEEN :debut AND :fin ORDER BY m.dateMouvement DESC",
-                            Mouvement.class)
+            return em.createQuery("SELECT m FROM Mouvement m JOIN FETCH m.produit LEFT JOIN FETCH m.utilisateur " +
+                                    "WHERE m.dateMouvement BETWEEN :debut AND :fin ORDER BY m.dateMouvement DESC",
+                                     Mouvement.class)
                     .setParameter("debut", debutDateTime)
                     .setParameter("fin", finDateTime)
                     .getResultList();

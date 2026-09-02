@@ -42,6 +42,8 @@ public class MouvementController {
     DatePicker dateDebut;
     @FXML
     DatePicker dateFin;
+    @FXML
+    TableColumn<Mouvement, String> colonneUtilisateur;
 
     private final MouvementService mouvementService = new MouvementServiceImpl();
     private static final DateTimeFormatter FORMAT_DATE = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
@@ -64,6 +66,10 @@ public class MouvementController {
         colonneType.setCellValueFactory(new PropertyValueFactory<>("type"));
         colonneQuantite.setCellValueFactory(new PropertyValueFactory<>("quantite"));
         colonneMotif.setCellValueFactory(new PropertyValueFactory<>("motif"));
+        colonneUtilisateur.setCellValueFactory(cellData -> {
+            com.gestionstock.model.Utilisateur utilisateur = cellData.getValue().getUtilisateur();
+            return new javafx.beans.property.SimpleStringProperty(utilisateur != null ? utilisateur.getNom() : "—");
+        });
 
         chargerDonnees();
     }
