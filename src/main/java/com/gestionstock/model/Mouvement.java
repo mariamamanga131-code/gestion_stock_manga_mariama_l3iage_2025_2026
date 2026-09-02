@@ -32,6 +32,10 @@ public class Mouvement {
     @Column(name = "date_mouvement")
     private LocalDateTime dateMouvement;
 
+    @ManyToOne
+    @JoinColumn(name = "utilisateur_id")
+    private Utilisateur utilisateur;
+
     public Mouvement() {
     }
 
@@ -89,5 +93,13 @@ public class Mouvement {
 
     public void setDateMouvement(LocalDateTime dateMouvement) {
         this.dateMouvement = dateMouvement;
+    }
+
+    public Utilisateur getUtilisateur() {
+        return utilisateur;
+    }
+
+    public void setUtilisateur(Utilisateur utilisateur) {
+        this.utilisateur = utilisateur;
     }
 }

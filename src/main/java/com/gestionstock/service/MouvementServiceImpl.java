@@ -61,8 +61,8 @@ public class MouvementServiceImpl implements MouvementService {
             LocalDateTime finDateTime = fin.atTime(23, 59, 59);
 
             return em.createQuery(
-                            "SELECT m FROM Mouvement m JOIN FETCH m.produit " +
-                                    "WHERE m.dateMouvement BETWEEN :debut AND :fin ORDER BY m.dateMouvement DESC",
+                    "SELECT m FROM Mouvement m JOIN FETCH m.produit " +
+                            "WHERE m.dateMouvement BETWEEN :debut AND :fin ORDER BY m.dateMouvement DESC",
                             Mouvement.class)
                     .setParameter("debut", debutDateTime)
                     .setParameter("fin", finDateTime)
@@ -106,6 +106,7 @@ public class MouvementServiceImpl implements MouvementService {
 
             mouvement.setProduit(produit);
             mouvement.setDateMouvement(LocalDateTime.now());
+            mouvement.setUtilisateur(com.gestionstock.util.SessionUtilisateur.getUtilisateurConnecte());
 
             em.persist(mouvement);
             em.merge(produit);
