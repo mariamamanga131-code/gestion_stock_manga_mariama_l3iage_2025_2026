@@ -45,6 +45,9 @@ public class ProduitController {
     ComboBox<Fournisseur> comboFiltreFournisseur;
     @FXML
     CheckBox checkStockBas;
+    @FXML
+    Button boutonSupprimer;
+
 
     private final ProduitService produitService = new ProduitServiceImpl();
     private final CategorieService categorieService = new CategorieServiceImpl();
@@ -55,6 +58,11 @@ public class ProduitController {
 
     @FXML
     public void initialize() {
+        if (!com.gestionstock.util.SessionUtilisateur.estAdmin()) {
+            boutonSupprimer.setVisible(false);
+            boutonSupprimer.setManaged(false);
+        }
+
         configurerColones();
         configurerFiltres();
         chargerDonnees();
@@ -149,16 +157,14 @@ public class ProduitController {
 
     @FXML
     private void supprimerProduit() {
-        Produit produitSelectionne = tableProduits.getSelectionModel().getSelectedItem();
-
-        if (produitSelectionne == null) {
-            Alert alerteInfo = new Alert(Alert.AlertType.INFORMATION);
-            alerteInfo.setTitle("Aucune sélection");
-            alerteInfo.setHeaderText(null);
-            alerteInfo.setContentText("Veuillez sélectionner un produit à supprimer.");
-            alerteInfo.showAndWait();
+        if (!com.gestionstock.util.SessionUtilisateur.estAdmin()) {
+            Alert alerteAcces = new Alert(Alert.AlertType.ERROR);
+            alerteAcces.setContentText("Seul un administrateur peut supprimer un produit.");
+            alerteAcces.showAndWait();
             return;
         }
+
+        Produit produitSelectionne = tableProduits.getSelectionModel().getSelectedItem();
 
         Alert alerteConfirmation = new Alert(Alert.AlertType.CONFIRMATION);
         alerteConfirmation.setTitle("Confirmation de suppression");

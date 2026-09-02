@@ -28,19 +28,21 @@ public class CategorieController {
     TableColumn<Categorie, Integer> colonneNbProduits;
     @FXML
     TextField champRecherche;
+    @FXML
+    Button boutonSupprimer;
 
     private final CategorieService categorieService = new CategorieServiceImpl();
     private ObservableList<Categorie> listeCategories;
 
+
     @FXML
     public void initialize() {
+        if (!com.gestionstock.util.SessionUtilisateur.estAdmin()) {
+            boutonSupprimer.setVisible(false);
+            boutonSupprimer.setManaged(false);
+        }
+
         colonneNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
-        colonneDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
-        colonneNbProduits.setCellValueFactory(cellData ->
-                new javafx.beans.property.SimpleIntegerProperty(
-                        cellData.getValue().getProduits().size()
-                ).asObject()
-        );
 
         chargerDonnees();
     }
@@ -103,14 +105,15 @@ public class CategorieController {
         }
     }
 
+
     @FXML
     void supprimerCategorie(ActionEvent event) {
-        Categorie selection = tableCategories.getSelectionModel().getSelectedItem();
-
-        if (selection == null) {
-            afficherAlerte(Alert.AlertType.WARNING, "Aucune sélection", "Sélectionnez une catégorie à supprimer.");
+        if (!com.gestionstock.util.SessionUtilisateur.estAdmin()) {
+            afficherAlerte(Alert.AlertType.ERROR, "Accès refusé", "Seul un administrateur peut supprimer une catégorie.");
             return;
         }
+
+        Categorie selection = tableCategories.getSelectionModel().getSelectedItem();
 
         try {
             categorieService.deleteCategorie(selection.getId());

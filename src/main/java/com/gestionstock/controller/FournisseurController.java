@@ -30,20 +30,20 @@ public class FournisseurController {
     TableColumn<Fournisseur, Long> colonneNbProduits;
     @FXML
     TextField champRecherche;
+    @FXML
+    Button boutonSupprimer;
 
     private final FournisseurService fournisseurService = new FournisseurServiceImpl();
     private ObservableList<Fournisseur> listeFournisseurs;
 
     @FXML
     public void initialize() {
+        if (!com.gestionstock.util.SessionUtilisateur.estAdmin()) {
+            boutonSupprimer.setVisible(false);
+            boutonSupprimer.setManaged(false);
+        }
+
         colonneNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
-        colonneEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
-        colonneTel.setCellValueFactory(new PropertyValueFactory<>("tel"));
-        colonneNbProduits.setCellValueFactory(cellData ->
-                new javafx.beans.property.SimpleObjectProperty<>(
-                        fournisseurService.countProduitsByFournisseur(cellData.getValue().getId())
-                )
-        );
 
         chargerDonnees();
     }
@@ -108,12 +108,12 @@ public class FournisseurController {
 
     @FXML
     void supprimerFournisseur(ActionEvent event) {
-        Fournisseur selection = tableFournisseurs.getSelectionModel().getSelectedItem();
-
-        if (selection == null) {
-            afficherAlerte(Alert.AlertType.WARNING, "Aucune sélection", "Sélectionnez un fournisseur à supprimer.");
+        if (!com.gestionstock.util.SessionUtilisateur.estAdmin()) {
+            afficherAlerte(Alert.AlertType.ERROR, "Accès refusé", "Seul un administrateur peut supprimer un fournisseur.");
             return;
         }
+
+        Fournisseur selection = tableFournisseurs.getSelectionModel().getSelectedItem();
 
         try {
             fournisseurService.deleteFournisseur(selection.getId());
